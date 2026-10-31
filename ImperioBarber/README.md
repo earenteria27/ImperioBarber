@@ -1,3 +1,33 @@
+# ImperioBarber
+
+Aplicativo web para la barbería **ImperioBarber** (Laravel 12).
+
+## Autenticación y autorización
+
+- Roles: `cliente`, `empleado`, `administrador` (enum `App\Enums\Role`).
+- Registro público: siempre crea **clientes**. Empleados y administradores los crea un administrador en `/admin/usuarios`.
+- Middleware `role` (`App\Http\Middleware\CheckRole`): `->middleware('role:administrador,empleado')`.
+- Política `App\Policies\UserPolicy` para la gestión de usuarios.
+- Directiva Blade `@role('administrador') ... @endrole`.
+
+### Puesta en marcha
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+touch database/database.sqlite
+php artisan migrate --seed
+npm install && npm run build
+php artisan serve
+```
+
+Usuarios de prueba (contraseña `password`): `admin@imperiobarber.test`, `empleado@imperiobarber.test`, `cliente@imperiobarber.test`.
+
+Pruebas: `php artisan test`
+
+---
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
