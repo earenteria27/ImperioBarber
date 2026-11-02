@@ -8,14 +8,24 @@ use Illuminate\Validation\Rule;
 
 class ClienteController extends Controller
 {
-    // Mostrar todos los clientes
-    public function index()
+    // Mostrar todos los clientes (con filtros y paginación)
+    public function index(Request $request)
     {
-        $clientes = Cliente::all();
+        $clientes = Cliente::query()
+            ->when($request->filled('buscar'), function ($q) use ($request) {
+                $buscar = $request->buscar;
+                $q->where(function ($sub) use ($buscar) {
+                    $sub->where('nombre', 'like', "%{$buscar}%")
+                        ->orWhere('telefono', 'like', "%{$buscar}%")
+                        ->orWhere('email', 'like', "%{$buscar}%");
+                });
+            })
+            ->orderBy('nombre')
+            ->paginate(5)
+            ->withQueryString();
 
         return view('clientes.index', compact('clientes'));
     }
-
     // Mostrar formulario para crear
     public function create()
     {
