@@ -7,10 +7,22 @@ use Illuminate\Http\Request;
 
 class ServicioController extends Controller
 {
-    // Mostrar todos los servicios
-    public function index()
+    // Mostrar todos los servicios (con filtros y paginación)
+    public function index(Request $request)
     {
-        $servicios = Servicio::all();
+        $servicios = Servicio::query()
+            ->when($request->filled('buscar'), function ($q) use ($request) {
+                $q->where('nombre', 'like', '%' . $request->buscar . '%');
+            })
+            ->when($request->filled('precio_min'), function ($q) use ($request) {
+                $q->where('precio', '>=', $request->precio_min);
+            })
+            ->when($request->filled('precio_max'), function ($q) use ($request) {
+                $q->where('precio', '<=', $request->precio_max);
+            })
+            ->orderBy('nombre')
+            ->paginate(5)
+            ->withQueryString();
 
         return view('servicios.index', compact('servicios'));
     }
