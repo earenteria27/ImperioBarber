@@ -87,3 +87,135 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# ImperioBarber
+
+## Descripción del proyecto
+
+ImperioBarber es una aplicación web desarrollada con Laravel 12 y MySQL, orientada a la gestión de un negocio de barbería.
+
+El sistema permite administrar los servicios ofrecidos y la información de los clientes mediante operaciones CRUD (Crear, Consultar, Actualizar y Eliminar).
+
+## Tecnologías utilizadas
+
+- PHP 8.2 o superior.
+- Laravel 12.
+- MySQL.
+- Bootstrap 5.
+- HTML.
+- Blade.
+- Git y GitHub.
+- Visual Studio Code.
+- Laragon.
+
+## Funcionalidades
+
+### Gestión de servicios
+- Registrar servicios.
+- Consultar servicios.
+- Editar servicios.
+- Eliminar servicios.
+- Administrar nombre, descripción, precio y duración.
+
+### Gestión de clientes
+- Registrar clientes.
+- Consultar clientes.
+- Editar clientes.
+- Eliminar clientes.
+- Administrar nombre, teléfono, correo electrónico y notas.
+
+## Requisitos previos
+
+Antes de ejecutar el proyecto se necesita:
+
+- Tener instalado PHP 8.2 o superior.
+- Tener instalado Composer.
+- Tener instalado Laragon o un servidor MySQL.
+- Tener Git instalado.
+
+## Instalación y configuración
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/earenteria27/ImperioBarber.git
+```
+
+### 2. Ingresar a la carpeta del proyecto Laravel
+
+```bash
+cd ImperioBarber/ImperioBarber
+```
+
+### 3. Instalar las dependencias
+
+```bash
+composer install
+```
+
+### 4. Configurar el archivo de entorno
+
+En PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+### 5. Generar la clave de Laravel
+
+```bash
+php artisan key:generate
+```
+
+### 6. Crear la base de datos
+
+En MySQL crear una base de datos llamada:
+
+`imperiobarber`
+
+Configurar las siguientes variables en el archivo `.env`:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=imperiobarber
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### 7. Ejecutar las migraciones
+
+```bash
+php artisan migrate
+```
+
+### 8. Iniciar el servidor
+
+```bash
+php artisan serve
+```
+
+Abrir en el navegador:
+
+http://127.0.0.1:8000
+
+## Estructura principal
+
+- `app/Models`: modelos Servicio y Cliente.
+- `app/Http/Controllers`: controladores de Servicios y Clientes.
+- `database/migrations`: estructura de las tablas.
+- `resources/views`: vistas de la aplicación.
+- `routes/web.php`: rutas del sistema.
+
+## Rama de desarrollo
+
+La implementación de los CRUD se encuentra en:
+
+`feature/cruds`
+
+## Autoría
+
+Proyecto académico desarrollado como práctica de programación web con Laravel y MySQL.
+
+© 2026 ImperioBarber.
