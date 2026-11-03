@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Servicio;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ServicioController extends Controller
 {
@@ -84,5 +85,21 @@ class ServicioController extends Controller
 
         return redirect()->route('servicios.index')
             ->with('success', 'Servicio eliminado correctamente.');
+    }
+
+    // Generar y descargar PDF de servicios
+    public function generarPdf()
+    {
+        $servicios = Servicio::all();
+
+        $data = [
+            'titulo' => 'Reporte de Servicios - ImperioBarber',
+            'fecha' => date('d/m/Y'),
+            'servicios' => $servicios
+        ];
+
+        $pdf = Pdf::loadView('pdf.reporte', $data);
+
+        return $pdf->download('reporte-servicios-imperiobarber.pdf');
     }
 }
