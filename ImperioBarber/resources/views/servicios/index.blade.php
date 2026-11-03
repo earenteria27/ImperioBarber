@@ -5,9 +5,14 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Gestión de Servicios</h2>
 
-    <a href="{{ route('servicios.create') }}" class="btn btn-primary">
-        Nuevo servicio
-    </a>
+    <div class="d-flex gap-2">
+        <a href="{{ route('servicios.pdf') }}" class="btn btn-danger">
+            Descargar PDF
+        </a>
+        <a href="{{ route('servicios.create') }}" class="btn btn-primary">
+            Nuevo servicio
+        </a>
+    </div>
 </div>
 
 <div class="card shadow-sm">

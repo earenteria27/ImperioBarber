@@ -13,3 +13,6 @@ Route::resource('servicios', ServicioController::class)
 
 Route::resource('clientes', ClienteController::class)
     ->except(['show']);
+
+// Ruta para descargar el PDF de servicios
+Route::get('/descargar-pdf', [ServicioController::class, 'generarPdf'])->name('servicios.pdf');
