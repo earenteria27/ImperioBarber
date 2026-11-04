@@ -1,41 +1,53 @@
 @extends('layouts.app')
 
-@section('title', 'Ingresar · ImperioBarber')
+@section('title', 'Iniciar Sesión · ImperioBarber')
 
 @section('content')
-    <div class="mx-auto max-w-md rounded-lg border border-zinc-800 bg-zinc-900 p-8">
-        <h1 class="mb-6 text-2xl font-bold text-amber-400">Iniciar sesión</h1>
+<div class="row justify-content-center">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow border-0 rounded-3">
+            <div class="card-body p-4">
+                <h3 class="mb-4 text-center fw-bold text-dark">Iniciar sesión</h3>
 
-        <form method="POST" action="{{ route('login') }}" class="space-y-4">
-            @csrf
+                <form method="POST" action="{{ route('login') }}">
+                    @csrf
 
-            <div>
-                <label for="email" class="mb-1 block text-sm">Correo</label>
-                <input id="email" name="email" type="email" value="{{ old('email') }}" required autofocus
-                       class="w-full rounded border border-zinc-700 bg-zinc-800 px-3 py-2">
-                @error('email') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo electrónico</label>
+                        <input id="email" name="email" type="email" value="{{ old('email') }}" required autofocus
+                               class="form-control @error('email') is-invalid @enderror">
+                        @error('email')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input id="password" name="password" type="password" required
+                               class="form-control @error('password') is-invalid @enderror">
+                        @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input type="checkbox" name="remember" id="remember" class="form-check-input">
+                        <label for="remember" class="form-check-label">Recordarme</label>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-dark py-2 fw-bold">Ingresar</button>
+                    </div>
+                </form>
+
+                <div class="mt-4 text-center">
+                    <small class="text-muted">
+                        ¿No tienes cuenta? 
+                        <a href="{{ route('register') }}" class="fw-bold text-dark text-decoration-none">Regístrate</a>
+                    </small>
+                </div>
             </div>
-
-            <div>
-                <label for="password" class="mb-1 block text-sm">Contraseña</label>
-                <input id="password" name="password" type="password" required
-                       class="w-full rounded border border-zinc-700 bg-zinc-800 px-3 py-2">
-                @error('password') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
-            </div>
-
-            <label class="flex items-center gap-2 text-sm">
-                <input type="checkbox" name="remember" class="rounded"> Recordarme
-            </label>
-
-            <button type="submit"
-                    class="w-full rounded bg-amber-400 py-2 font-semibold text-zinc-900 hover:bg-amber-300">
-                Ingresar
-            </button>
-        </form>
-
-        <p class="mt-6 text-center text-sm text-zinc-400">
-            ¿No tienes cuenta?
-            <a href="{{ route('register') }}" class="text-amber-400 hover:underline">Regístrate</a>
-        </p>
+        </div>
     </div>
+</div>
 @endsection
