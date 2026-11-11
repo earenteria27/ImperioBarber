@@ -34,6 +34,15 @@
                 </div>
                 @endif
 
+                {{-- Citas: los tres roles --}}
+                @auth
+                @unless(request()->routeIs('home'))
+                <div class="navbar-nav flex-row">
+                    <a class="nav-link me-3" href="{{ route('citas.index') }}">Citas</a>
+                </div>
+                @endunless
+                @endauth
+
                 {{-- Con sesión iniciada, y no en la bienvenida --}}
                 @auth
                 @unless(request()->routeIs('home'))

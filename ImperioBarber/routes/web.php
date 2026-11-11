@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\CitaController;
 use App\Http\Controllers\FranjaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PanelController;
@@ -48,6 +49,15 @@ Route::middleware('auth')->group(function () {
             ->except(['show'])
             ->parameters(['usuarios' => 'user']);
         Route::patch('usuarios/{user}/activo', [UserController::class, 'toggleActivo'])->name('usuarios.activo');
+    });
+
+    // Citas: los tres roles ven su lista (RF-04)
+    Route::get('/citas', [CitaController::class, 'index'])->name('citas.index');
+
+    // Confirmar y cancelar: solo administrador y empleado (RF-05)
+    Route::middleware('role:administrador,empleado')->group(function () {
+        Route::patch('/citas/{cita}/confirmar', [CitaController::class, 'confirmar'])->name('citas.confirmar');
+        Route::patch('/citas/{cita}/cancelar', [CitaController::class, 'cancelar'])->name('citas.cancelar');
     });
 
     // Franjas horarias: solo administrador (RF-07)
