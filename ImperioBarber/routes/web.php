@@ -5,8 +5,9 @@ use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+
 Route::get('/', function () {
-    return redirect()->route('servicios.index');
+    return view('welcome');
 });
 
 Route::resource('servicios', ServicioController::class)
