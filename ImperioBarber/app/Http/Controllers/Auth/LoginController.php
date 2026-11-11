@@ -27,9 +27,12 @@ class LoginController extends Controller
             'password.required' => 'La contraseña es obligatoria.',
         ]);
 
+        // Solo pueden entrar usuarios activos
+        $credentials['activo'] = true;
+
         if (! Auth::attempt($credentials, $request->boolean('remember'))) {
             throw ValidationException::withMessages([
-                'email' => 'Las credenciales no coinciden con nuestros registros.',
+                'email' => 'Las credenciales no coinciden o la cuenta está desactivada.',
             ]);
         }
 

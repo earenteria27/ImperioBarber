@@ -26,6 +26,14 @@
                 </div>
                 @endrole
 
+                {{-- Solo administrador --}}
+                @if (auth()->check() && auth()->user()->isAdmin())
+                <div class="navbar-nav flex-row">
+                    <a class="nav-link me-3" href="{{ route('franjas.index') }}">Franjas</a>
+                    <a class="nav-link me-3" href="{{ route('admin.usuarios.index') }}">Usuarios</a>
+                </div>
+                @endif
+
                 {{-- Con sesión iniciada, y no en la bienvenida --}}
                 @auth
                 @unless(request()->routeIs('home'))

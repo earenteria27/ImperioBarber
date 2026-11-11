@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\FranjaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\Admin\UserController;
@@ -46,6 +47,12 @@ Route::middleware('auth')->group(function () {
         Route::resource('usuarios', UserController::class)
             ->except(['show'])
             ->parameters(['usuarios' => 'user']);
+        Route::patch('usuarios/{user}/activo', [UserController::class, 'toggleActivo'])->name('usuarios.activo');
+    });
+
+    // Franjas horarias: solo administrador (RF-07)
+    Route::middleware('role:administrador')->group(function () {
+        Route::resource('franjas', FranjaController::class)->except(['show']);
     });
 
     // Solo administrador y empleado

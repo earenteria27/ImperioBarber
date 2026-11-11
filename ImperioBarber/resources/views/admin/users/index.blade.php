@@ -3,12 +3,20 @@
 @section('title', 'Usuarios · ImperioBarber')
 
 @section('content')
+@if (session('status'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('status') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+</div>
+@endif
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="h2 mb-0">Usuarios</h1>
     @can('create', App\Models\User::class)
     <a href="{{ route('admin.usuarios.create') }}" class="btn btn-warning">Nuevo usuario</a>
     @endcan
 </div>
+
+
 
 <div class="card shadow-sm">
     <div class="table-responsive">
@@ -35,6 +43,18 @@
                         @can('update', $user)
                         <a href="{{ route('admin.usuarios.edit', $user) }}"
                             class="btn btn-sm btn-outline-secondary">Editar</a>
+                        @endcan
+                        @can('update', $user)
+                        @if (! $user->is(auth()->user()))
+                        <form method="POST" action="{{ route('admin.usuarios.activo', $user) }}" class="d-inline">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit"
+                                class="btn btn-sm {{ $user->activo ? 'btn-outline-warning' : 'btn-outline-success' }}">
+                                {{ $user->activo ? 'Desactivar' : 'Activar' }}
+                            </button>
+                        </form>
+                        @endif
                         @endcan
 
                         @can('delete', $user)
