@@ -24,7 +24,7 @@
                 color:#333;
                 margin-bottom:20px;
             ">
-                Donde el estilo, la elegancia y la confianza se encuentran
+                Donde el estilo, la elegancia y la confianza se encuentran.
             </p>
 
             <p style="
@@ -142,7 +142,7 @@
             ">
 
                 <img
-                    src="{{ asset('images/corte.jpg.webp') }}"
+                    src="{{ asset('images/corte.jpg') }}"
                     style="
                     width:100%;
                     height:250px;

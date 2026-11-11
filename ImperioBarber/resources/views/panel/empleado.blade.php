@@ -3,10 +3,12 @@
 @section('title', 'Agenda · ImperioBarber')
 
 @section('content')
-    <h1 class="text-3xl font-bold text-amber-400">Panel de empleado</h1>
-    <p class="mt-2 text-zinc-300">Bienvenido, {{ auth()->user()->name }}. Aquí verás la agenda de citas.</p>
+<h1 class="h2">Panel de empleado</h1>
+<p class="text-muted">Bienvenido, {{ auth()->user()->name }}. Aquí verás la agenda de citas.</p>
 
-    <div class="mt-8 rounded-lg border border-zinc-800 bg-zinc-900 p-6 text-zinc-400">
+<div class="card shadow-sm mt-4">
+    <div class="card-body text-muted">
         Aquí irá la agenda de citas (próximo módulo).
     </div>
+</div>
 @endsection
