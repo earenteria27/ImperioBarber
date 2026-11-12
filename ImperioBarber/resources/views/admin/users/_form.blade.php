@@ -1,51 +1,54 @@
 @php($editing = isset($user))
 
-<div>
-    <label for="name" class="mb-1 block text-sm">Nombre</label>
-    <input id="name" name="name" type="text" value="{{ old('name', $user->name ?? '') }}" required
-           class="w-full rounded border border-zinc-700 bg-zinc-800 px-3 py-2">
-    @error('name') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
+<div class="mb-3">
+    <label for="name" class="form-label">Nombre</label>
+    <input id="name" name="name" type="text" required
+        value="{{ old('name', $user->name ?? '') }}"
+        class="form-control @error('name') is-invalid @enderror">
+    @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
 </div>
 
-<div>
-    <label for="email" class="mb-1 block text-sm">Correo</label>
-    <input id="email" name="email" type="email" value="{{ old('email', $user->email ?? '') }}" required
-           class="w-full rounded border border-zinc-700 bg-zinc-800 px-3 py-2">
-    @error('email') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
+<div class="mb-3">
+    <label for="email" class="form-label">Correo</label>
+    <input id="email" name="email" type="email" required
+        value="{{ old('email', $user->email ?? '') }}"
+        class="form-control @error('email') is-invalid @enderror">
+    @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
 </div>
 
-<div>
-    <label for="telefono" class="mb-1 block text-sm">Teléfono</label>
-    <input id="telefono" name="telefono" type="text" value="{{ old('telefono', $user->telefono ?? '') }}"
-           class="w-full rounded border border-zinc-700 bg-zinc-800 px-3 py-2">
-    @error('telefono') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
+<div class="mb-3">
+    <label for="telefono" class="form-label">Teléfono</label>
+    <input id="telefono" name="telefono" type="text"
+        value="{{ old('telefono', $user->telefono ?? '') }}"
+        class="form-control @error('telefono') is-invalid @enderror">
+    @error('telefono') <div class="invalid-feedback">{{ $message }}</div> @enderror
 </div>
 
-<div>
-    <label for="role" class="mb-1 block text-sm">Rol</label>
+<div class="mb-3">
+    <label for="role" class="form-label">Rol</label>
     <select id="role" name="role" required
-            class="w-full rounded border border-zinc-700 bg-zinc-800 px-3 py-2">
+        class="form-select @error('role') is-invalid @enderror">
         @foreach ($roles as $role)
-            <option value="{{ $role->value }}"
-                @selected(old('role', isset($user) ? $user->role->value : 'cliente') === $role->value)>
-                {{ $role->label() }}
-            </option>
+        <option value="{{ $role->value }}"
+            @selected(old('role', isset($user) ? $user->role->value : 'cliente') === $role->value)>
+            {{ $role->label() }}
+        </option>
         @endforeach
     </select>
-    @error('role') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
+    @error('role') <div class="invalid-feedback">{{ $message }}</div> @enderror
 </div>
 
-<div>
-    <label for="password" class="mb-1 block text-sm">
+<div class="mb-3">
+    <label for="password" class="form-label">
         Contraseña {{ $editing ? '(déjala vacía para no cambiarla)' : '' }}
     </label>
     <input id="password" name="password" type="password" {{ $editing ? '' : 'required' }}
-           class="w-full rounded border border-zinc-700 bg-zinc-800 px-3 py-2">
-    @error('password') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
+        class="form-control @error('password') is-invalid @enderror">
+    @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
 </div>
 
-<div>
-    <label for="password_confirmation" class="mb-1 block text-sm">Confirmar contraseña</label>
-    <input id="password_confirmation" name="password_confirmation" type="password" {{ $editing ? '' : 'required' }}
-           class="w-full rounded border border-zinc-700 bg-zinc-800 px-3 py-2">
+<div class="mb-3">
+    <label for="password_confirmation" class="form-label">Confirmar contraseña</label>
+    <input id="password_confirmation" name="password_confirmation" type="password"
+        {{ $editing ? '' : 'required' }} class="form-control">
 </div>

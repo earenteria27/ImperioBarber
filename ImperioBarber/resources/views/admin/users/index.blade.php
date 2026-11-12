@@ -3,57 +3,76 @@
 @section('title', 'Usuarios · ImperioBarber')
 
 @section('content')
-    <div class="mb-6 flex items-center justify-between">
-        <h1 class="text-3xl font-bold text-amber-400">Usuarios</h1>
-        @can('create', App\Models\User::class)
-            <a href="{{ route('admin.usuarios.create') }}"
-               class="rounded bg-amber-400 px-4 py-2 font-semibold text-zinc-900 hover:bg-amber-300">
-                Nuevo usuario
-            </a>
-        @endcan
-    </div>
+@if (session('status'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('status') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+</div>
+@endif
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2 mb-0">Usuarios</h1>
+    @can('create', App\Models\User::class)
+    <a href="{{ route('admin.usuarios.create') }}" class="btn btn-warning">Nuevo usuario</a>
+    @endcan
+</div>
 
-    <div class="overflow-x-auto rounded-lg border border-zinc-800">
-        <table class="w-full text-left text-sm">
-            <thead class="bg-zinc-900 text-zinc-400">
+
+
+<div class="card shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
                 <tr>
-                    <th class="px-4 py-3">Nombre</th>
-                    <th class="px-4 py-3">Correo</th>
-                    <th class="px-4 py-3">Teléfono</th>
-                    <th class="px-4 py-3">Rol</th>
-                    <th class="px-4 py-3 text-right">Acciones</th>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Rol</th>
+                    <th class="text-end">Acciones</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-zinc-800">
+            <tbody>
                 @foreach ($users as $user)
-                    <tr>
-                        <td class="px-4 py-3">{{ $user->name }}</td>
-                        <td class="px-4 py-3">{{ $user->email }}</td>
-                        <td class="px-4 py-3">{{ $user->telefono ?? '—' }}</td>
-                        <td class="px-4 py-3">
-                            <span class="rounded-full bg-amber-400/10 px-2 py-1 text-xs text-amber-300">
-                                {{ $user->role->label() }}
-                            </span>
-                        </td>
-                        <td class="flex justify-end gap-3 px-4 py-3">
-                            @can('update', $user)
-                                <a href="{{ route('admin.usuarios.edit', $user) }}" class="text-amber-400 hover:underline">Editar</a>
-                            @endcan
+                <tr>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>{{ $user->telefono ?? '—' }}</td>
+                    <td>
+                        <span class="badge text-bg-warning">{{ $user->role->label() }}</span>
+                    </td>
+                    <td class="text-end">
+                        @can('update', $user)
+                        <a href="{{ route('admin.usuarios.edit', $user) }}"
+                            class="btn btn-sm btn-outline-secondary">Editar</a>
+                        @endcan
+                        @can('update', $user)
+                        @if (! $user->is(auth()->user()))
+                        <form method="POST" action="{{ route('admin.usuarios.activo', $user) }}" class="d-inline">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit"
+                                class="btn btn-sm {{ $user->activo ? 'btn-outline-warning' : 'btn-outline-success' }}">
+                                {{ $user->activo ? 'Desactivar' : 'Activar' }}
+                            </button>
+                        </form>
+                        @endif
+                        @endcan
 
-                            @can('delete', $user)
-                                <form method="POST" action="{{ route('admin.usuarios.destroy', $user) }}"
-                                      onsubmit="return confirm('¿Eliminar a {{ $user->name }}?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-400 hover:underline">Eliminar</button>
-                                </form>
-                            @endcan
-                        </td>
-                    </tr>
+                        @can('delete', $user)
+                        <form method="POST" action="{{ route('admin.usuarios.destroy', $user) }}"
+                            class="d-inline"
+                            onsubmit="return confirm('¿Eliminar a {{ $user->name }}?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                        </form>
+                        @endcan
+                    </td>
+                </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+</div>
 
-    <div class="mt-4">{{ $users->links() }}</div>
+<div class="mt-3">{{ $users->links() }}</div>
 @endsection

@@ -37,10 +37,10 @@ class ClienteController extends Controller
     {
         $datos = $request->validate([
             'nombre' => 'required|string|max:255',
-            'telefono' => 'required|string|max:20',
+            'telefono' => ['required', 'string', 'regex:/^[0-9]{7,15}$/', 'unique:clientes,telefono'],
             'email' => 'nullable|email|unique:clientes,email',
             'notas' => 'nullable|string',
-        ]);
+        ], $this->mensajes());
 
         Cliente::create($datos);
 
@@ -65,14 +65,19 @@ class ClienteController extends Controller
     {
         $datos = $request->validate([
             'nombre' => 'required|string|max:255',
-            'telefono' => 'required|string|max:20',
+            'telefono' => [
+                'required',
+                'string',
+                'regex:/^[0-9]{7,15}$/',
+                Rule::unique('clientes', 'telefono')->ignore($cliente->id),
+            ],
             'email' => [
                 'nullable',
                 'email',
                 Rule::unique('clientes', 'email')->ignore($cliente->id),
             ],
             'notas' => 'nullable|string',
-        ]);
+        ], $this->mensajes());
 
         $cliente->update($datos);
 
@@ -87,5 +92,15 @@ class ClienteController extends Controller
 
         return redirect()->route('clientes.index')
             ->with('success', 'Cliente eliminado correctamente.');
+    }
+
+    // Mensajes de error en español para teléfono (RF-01)
+    private function mensajes(): array
+    {
+        return [
+            'telefono.required' => 'El teléfono es obligatorio.',
+            'telefono.regex' => 'El teléfono solo puede tener números (entre 7 y 15 dígitos).',
+            'telefono.unique' => 'Ya existe un cliente con este teléfono.',
+        ];
     }
 }

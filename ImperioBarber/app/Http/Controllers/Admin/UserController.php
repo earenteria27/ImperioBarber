@@ -81,4 +81,22 @@ class UserController extends Controller
         return redirect()->route('admin.usuarios.index')
             ->with('status', 'Usuario eliminado correctamente.');
     }
+
+    public function toggleActivo(User $user): RedirectResponse
+    {
+        Gate::authorize('update', $user);
+
+        if ($user->is(auth()->user())) {
+            return redirect()->route('admin.usuarios.index')
+                ->with('status', 'No puedes desactivar tu propia cuenta.');
+        }
+
+        $user->activo = ! $user->activo;
+        $user->save();
+
+        return redirect()->route('admin.usuarios.index')
+            ->with('status', $user->activo
+                ? 'Usuario activado correctamente.'
+                : 'Usuario desactivado correctamente.');
+    }
 }

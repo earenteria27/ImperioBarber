@@ -3,24 +3,72 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\CitaController;
+use App\Http\Controllers\FranjaController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PanelController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+
 Route::get('/', function () {
-    return redirect()->route('servicios.index');
+    return view('welcome');
+})->name('home');
+
+// Solo para visitantes (sin sesión iniciada)
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [LoginController::class, 'create'])->name('login');
+    Route::post('/login', [LoginController::class, 'store']);
+
+    Route::get('/register', [RegisterController::class, 'create'])->name('register');
+    Route::post('/register', [RegisterController::class, 'store']);
 });
 
-Route::resource('servicios', ServicioController::class)
-    ->except(['show']);
+// Solo con sesión iniciada
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 
-Route::resource('clientes', ClienteController::class)
-    ->except(['show']);
+    // Cada rol va a su panel
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
-// Ruta para descargar el PDF de servicios
-Route::get('/descargar-pdf', [ServicioController::class, 'generarPdf'])->name('servicios.pdf');
-// Rutas para el Login
-Route::get('/login', [LoginController::class, 'create'])->name('login');
-Route::post('/login', [LoginController::class, 'store']);
+    Route::get('/panel/cliente', [PanelController::class, 'cliente'])
+        ->middleware('role:cliente')
+        ->name('panel.cliente');
 
-// Rutas para el Registro
-Route::get('/register', [RegisterController::class, 'create'])->name('register');
-Route::post('/register', [RegisterController::class, 'store']);
+    Route::get('/panel/empleado', [PanelController::class, 'empleado'])
+        ->middleware('role:empleado,administrador')
+        ->name('panel.empleado');
+
+    Route::get('/panel/admin', [PanelController::class, 'admin'])
+        ->middleware('role:administrador')
+        ->name('panel.admin');
+
+    // Gestión de usuarios: solo administrador
+    Route::prefix('admin')->name('admin.')->middleware('role:administrador')->group(function () {
+        Route::resource('usuarios', UserController::class)
+            ->except(['show'])
+            ->parameters(['usuarios' => 'user']);
+        Route::patch('usuarios/{user}/activo', [UserController::class, 'toggleActivo'])->name('usuarios.activo');
+    });
+
+    // Citas: los tres roles ven su lista (RF-04)
+    Route::get('/citas', [CitaController::class, 'index'])->name('citas.index');
+
+    // Confirmar y cancelar: solo administrador y empleado (RF-05)
+    Route::middleware('role:administrador,empleado')->group(function () {
+        Route::patch('/citas/{cita}/confirmar', [CitaController::class, 'confirmar'])->name('citas.confirmar');
+        Route::patch('/citas/{cita}/cancelar', [CitaController::class, 'cancelar'])->name('citas.cancelar');
+    });
+
+    // Franjas horarias: solo administrador (RF-07)
+    Route::middleware('role:administrador')->group(function () {
+        Route::resource('franjas', FranjaController::class)->except(['show']);
+    });
+
+    // Solo administrador y empleado
+    Route::middleware('role:administrador,empleado')->group(function () {
+        Route::resource('servicios', ServicioController::class)->except(['show']);
+        Route::resource('clientes', ClienteController::class)->except(['show']);
+        Route::get('/descargar-pdf', [ServicioController::class, 'generarPdf'])->name('servicios.pdf');
+    });
+});

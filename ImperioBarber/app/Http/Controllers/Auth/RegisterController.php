@@ -19,7 +19,7 @@ class RegisterController extends Controller
 
     public function store(RegisterRequest $request): RedirectResponse
     {
-        $user = new User($request->validated());
+        $user = new User($request->safe()->except('acepta_datos'));
 
         $user->role = Role::Cliente;
         $user->save();
@@ -27,6 +27,6 @@ class RegisterController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->route('servicios.index');
+        return redirect()->route('dashboard');
     }
 }
