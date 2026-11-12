@@ -1,0 +1,26 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+/* Estilos personalizados para ImperioBarber */
+.seccion-contenedor {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #000000 !important;
+    border-radius: 10px;
+    border: 2px solid #f39c12;
+    text-align: center;
+}
+.titulo-seccion {
+    color: #f39c12 !important;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
