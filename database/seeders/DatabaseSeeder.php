@@ -19,9 +19,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'empleado@imperiobarber.test',
         ]);
 
-        User::factory()->cliente()->create([
+        $cliente = User::factory()->cliente()->create([
             'name' => 'Cliente Imperio',
             'email' => 'cliente@imperiobarber.test',
         ]);
+
+        $cliente->ensureClienteProfile();
     }
 }

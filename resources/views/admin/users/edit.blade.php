@@ -3,17 +3,24 @@
 @section('title', 'Editar usuario · ImperioBarber')
 
 @section('content')
-    <div class="mx-auto max-w-lg rounded-lg border border-zinc-800 bg-zinc-900 p-8">
-        <h1 class="mb-6 text-2xl font-bold text-amber-400">Editar usuario</h1>
+    <section class="panel-banner mb-4">
+        <div>
+            <p class="panel-eyebrow mb-2">Administración</p>
+            <h1 class="display-5 fw-bold mb-2">Editar usuario</h1>
+            <p class="lead text-white-50 mb-0">Actualiza la información de {{ $user->name }}.</p>
+        </div>
+    </section>
 
-        <form method="POST" action="{{ route('admin.usuarios.update', $user) }}" class="space-y-4">
+    <div class="card bg-dark border-secondary text-white shadow-sm mx-auto" style="max-width: 860px;">
+        <form method="POST" action="{{ route('admin.usuarios.update', $user) }}">
             @csrf
             @method('PUT')
-            @include('admin.users._form')
-
-            <div class="flex gap-3">
-                <button type="submit" class="rounded bg-amber-400 px-5 py-2 font-semibold text-zinc-900 hover:bg-amber-300">Actualizar</button>
-                <a href="{{ route('admin.usuarios.index') }}" class="rounded bg-zinc-800 px-5 py-2 hover:bg-zinc-700">Cancelar</a>
+            <div class="card-body p-4 p-md-5">
+                @include('admin.users._form')
+            </div>
+            <div class="card-footer border-secondary d-flex gap-2 p-3">
+                <button type="submit" class="btn btn-imperio">Guardar cambios</button>
+                <a href="{{ route('admin.usuarios.index') }}" class="btn btn-outline-light">Cancelar</a>
             </div>
         </form>
     </div>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Role;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -30,6 +31,25 @@ class User extends Authenticatable
             'password' => 'hashed',
             'role' => Role::class,
         ];
+    }
+
+    public function cliente(): HasOne
+    {
+        return $this->hasOne(Cliente::class);
+    }
+
+    public function ensureClienteProfile(): Cliente
+    {
+        $cliente = $this->cliente()->first()
+            ?? Cliente::firstOrNew(['email' => $this->email]);
+
+        $cliente->user_id = $this->id;
+        $cliente->nombre = $cliente->nombre ?: $this->name;
+        $cliente->telefono = $cliente->telefono ?? $this->telefono;
+        $cliente->email = $this->email;
+        $cliente->save();
+
+        return $cliente;
     }
 
     public function hasRole(Role|string ...$roles): bool

@@ -34,6 +34,9 @@ class UserController extends Controller
         $user = new User($request->safe()->except('role'));
         $user->role = Role::from($request->validated('role'));
         $user->save();
+        if ($user->isCliente()) {
+            $user->ensureClienteProfile();
+        }
 
         return redirect()->route('admin.usuarios.index')
             ->with('status', 'Usuario creado correctamente.');
@@ -67,6 +70,9 @@ class UserController extends Controller
 
         $user->role = $newRole;
         $user->save();
+        if ($user->isCliente()) {
+            $user->ensureClienteProfile();
+        }
 
         return redirect()->route('admin.usuarios.index')
             ->with('status', 'Usuario actualizado correctamente.');
