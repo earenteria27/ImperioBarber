@@ -60,6 +60,10 @@ class AuthenticationTest extends TestCase
         $user = User::where('email', 'juan@example.com')->firstOrFail();
 
         $this->assertSame(Role::Cliente, $user->role);
+        $this->assertDatabaseHas('clientes', [
+            'user_id' => $user->id,
+            'email' => $user->email,
+        ]);
         $this->assertAuthenticatedAs($user);
     }
 

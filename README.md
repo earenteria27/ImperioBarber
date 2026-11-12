@@ -9,6 +9,7 @@ Aplicativo web para la barbería **ImperioBarber** (Laravel 12).
 - Middleware `role` (`App\Http\Middleware\CheckRole`): `->middleware('role:administrador,empleado')`.
 - Política `App\Policies\UserPolicy` para la gestión de usuarios.
 - Directiva Blade `@role('administrador') ... @endrole`.
+- La portada pública muestra la galería. La gestión de clientes y los cambios de citas están disponibles para administradores y empleados; cada cliente puede agendar y consultar únicamente sus propias citas.
 
 ### Puesta en marcha
 
@@ -123,6 +124,12 @@ El sistema permite administrar los servicios ofrecidos y la información de los 
 - Editar clientes.
 - Eliminar clientes.
 - Administrar nombre, teléfono, correo electrónico y notas.
+
+### Gestión de citas
+- Registrar citas con cliente y servicio.
+- Consultar el calendario de agendamiento.
+- Editar el estado, fecha, hora y observaciones.
+- Eliminar citas canceladas o vencidas.
 
 ## Requisitos previos
 
