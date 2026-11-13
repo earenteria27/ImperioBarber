@@ -1,187 +1,57 @@
-# ImperioBarber
-
-Aplicativo web para la barbería **ImperioBarber** (Laravel 12).
-
-## Autenticación y autorización
-
-- Roles: `cliente`, `empleado`, `administrador` (enum `App\Enums\Role`).
-- Registro público: siempre crea **clientes**. Empleados y administradores los crea un administrador en `/admin/usuarios`.
-- Middleware `role` (`App\Http\Middleware\CheckRole`): `->middleware('role:administrador,empleado')`.
-- Política `App\Policies\UserPolicy` para la gestión de usuarios.
-- Directiva Blade `@role('administrador') ... @endrole`.
-- La portada pública muestra la galería. La gestión de clientes y los cambios de citas están disponibles para administradores y empleados; cada cliente puede agendar y consultar únicamente sus propias citas.
-
-### Puesta en marcha
-
-```bash
-composer install
-cp .env.example .env
-php artisan key:generate
-touch database/database.sqlite
-php artisan migrate --seed
-npm install && npm run build
-php artisan serve
-```
-
-Usuarios de prueba (contraseña `password`): `admin@imperiobarber.test`, `empleado@imperiobarber.test`, `cliente@imperiobarber.test`.
-
-Pruebas: `php artisan test`
-
+# ImperioBarber - Sistema Web de Gestión de Citas
+ 
+Aplicación web responsiva para automatizar la gestión de turnos y reservas de la barbería **ImperioBarber**. Reemplaza el agendamiento manual (cuadernos, llamadas y mensajes de WhatsApp) por una plataforma de autogestión disponible 24/7 que evita los cruces de horarios y centraliza la información de los clientes.
+ 
 ---
-
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-# ImperioBarber
-
-## Descripción del proyecto
-
-ImperioBarber es una aplicación web desarrollada con Laravel 12 y MySQL, orientada a la gestión de un negocio de barbería.
-
-El sistema permite administrar los servicios ofrecidos y la información de los clientes mediante operaciones CRUD (Crear, Consultar, Actualizar y Eliminar).
-
-## Tecnologías utilizadas
-
-- PHP 8.2 o superior.
-- Laravel 12.
-- MySQL.
-- Bootstrap 5.
-- HTML.
-- Blade.
-- Git y GitHub.
-- Visual Studio Code.
-- Laragon.
-
-## Funcionalidades
-
-### Gestión de servicios
-- Registrar servicios.
-- Consultar servicios.
-- Editar servicios.
-- Eliminar servicios.
-- Administrar nombre, descripción, precio y duración.
-
-### Gestión de clientes
-- Registrar clientes.
-- Consultar clientes.
-- Editar clientes.
-- Eliminar clientes.
-- Administrar nombre, teléfono, correo electrónico y notas.
-
-### Gestión de citas
-- Registrar citas con cliente y servicio.
-- Consultar el calendario de agendamiento.
-- Editar el estado, fecha, hora y observaciones.
-- Eliminar citas canceladas o vencidas.
-
+ 
+## Características principales
+ 
+* **Agendamiento en 3 pasos:** el cliente elige el servicio, el barbero y reserva su turno desde cualquier dispositivo.
+* **Control de concurrencia:** transacciones ACID y bloqueo de fila FOR UPDATE para evitar que dos clientes reserven el mismo horario con el mismo barbero.
+* **Roles y seguridad:** acceso por roles (**Cliente**, **Barbero** y **Administrador**), contraseñas encriptadas y cierre de sesión por inactividad.
+---
+ 
+## Tecnologías
+ 
+* PHP 8.2+ / Laravel 12
+* MySQL / MariaDB
+* Blade, HTML5, CSS3, JavaScript
+* Patrón MVC
+---
+ 
 ## Requisitos previos
-
-Antes de ejecutar el proyecto se necesita:
-
-- Tener instalado PHP 8.2 o superior.
-- Tener instalado Composer.
-- Tener instalado Laragon o un servidor MySQL.
-- Tener Git instalado.
-
-## Instalación y configuración
-
+ 
+* [PHP](https://www.php.net/) >= 8.2
+* [Composer](https://getcomposer.org/)
+* [Node.js y NPM](https://nodejs.org/)
+* [XAMPP](https://www.apachefriends.org/) o Laragon (para MySQL)
+* [Git](https://git-scm.com/)
+---
+ 
+## Instalación
+ 
 ### 1. Clonar el repositorio
-
+ 
 ```bash
 git clone https://github.com/earenteria27/ImperioBarber.git
+cd ImperioBarber
 ```
-
-### 2. Ingresar a la carpeta del proyecto Laravel
-
-```bash
-cd ImperioBarber/ImperioBarber
-```
-
-### 3. Instalar las dependencias
-
+ 
+### 2. Instalar dependencias
+ 
 ```bash
 composer install
+npm install
+npm run build
 ```
-
-### 4. Configurar el archivo de entorno
-
-En PowerShell:
-
-```powershell
-Copy-Item .env.example .env
-```
-
-### 5. Generar la clave de Laravel
-
+ 
+### 3. Crear el archivo `.env`
+ 
 ```bash
-php artisan key:generate
+copy .env.example .env
 ```
-
-### 6. Crear la base de datos
-
-En MySQL crear una base de datos llamada:
-
-`imperiobarber`
-
-Configurar las siguientes variables en el archivo `.env`:
-
+Revisa que los datos de la base de datos queden así:
+ 
 ```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
@@ -190,39 +60,45 @@ DB_DATABASE=imperiobarber
 DB_USERNAME=root
 DB_PASSWORD=
 ```
-
-### 7. Ejecutar las migraciones
-
+ 
+### 4. Generar la llave de la aplicación
+ 
+```bash
+php artisan key:generate
+```
+ 
+### 5. Ejecutar las migraciones
+ 
+Enciende **MySQL** en XAMPP y ejecuta:
+ 
 ```bash
 php artisan migrate
 ```
-
-### 8. Iniciar el servidor
-
+ 
+Si la base de datos `imperiobarber` no existe, Laravel preguntará si quieres crearla: responde **yes**. (También puedes crearla manualmente en `http://localhost/phpmyadmin`).
+ 
+### 6. Cargar los datos iniciales
+ 
+```bash
+php artisan db:seed
+```
+ 
+### 7. Iniciar el servidor
+ 
 ```bash
 php artisan serve
 ```
-
-Abrir en el navegador:
-
-http://127.0.0.1:8000
-
-## Estructura principal
-
-- `app/Models`: modelos Servicio y Cliente.
-- `app/Http/Controllers`: controladores de Servicios y Clientes.
-- `database/migrations`: estructura de las tablas.
-- `resources/views`: vistas de la aplicación.
-- `routes/web.php`: rutas del sistema.
-
-## Rama de desarrollo
-
-La implementación de los CRUD se encuentra en:
-
-`feature/cruds`
-
-## Autoría
-
-Proyecto académico desarrollado como práctica de programación web con Laravel y MySQL.
-
-© 2026 ImperioBarber.
+ 
+Abre en tu navegador: **http://127.0.0.1:8000**
+ 
+---
+ 
+## Equipo de desarrollo
+ 
+Proyecto de **Tecnología en Sistemas de la Información** — Institución Universitaria Antonio José Camacho (2026):
+ 
+* **Gisela Andrade Murillo** — Product Owner y desarrolladora
+* **Ana Yiseth Solarte Ruiz** — Scrum Master y desarrolladora
+* **Michelle Dayanna Duque Marín** — Desarrolladora
+* **Eduar Andrés Rentería Balverde** — Desarrollador
+ 
